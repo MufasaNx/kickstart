@@ -1,6 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const Web3 = require('web3')
-const { abi, evm: { bytecode } } = require('./compile')
+const { abi, evm: { bytecode } } = require('./build/CampaignFactory.json')
 
 const provider = new HDWalletProvider({
     mnemonic: process.env.ETH_MNEMONIC_PHRASE,
@@ -14,12 +14,12 @@ const deploy = async () => {
 
     console.log('Attempting to deploy from account', accounts[0])
 
-    const lottery = await new web3.eth.Contract(abi)
+    const factory = await new web3.eth.Contract(abi)
         .deploy({ data: bytecode.object })
-        .send({ gas: '10000', from: accounts[0] })
+        .send({ gas: '1000000', from: accounts[0] })
 
     console.log('abi ', JSON.stringify(abi));
-    console.log('Contract deployed at', lottery.options.address)
+    console.log('Contract deployed at', factory.options.address)
     provider.engine.stop();
 }
 
